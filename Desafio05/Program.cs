@@ -22,14 +22,15 @@ namespace Desafio05
                 "1 - Adicionar ração\n" +
                 "2 - Visualizar ração\n" +
                 "3 - Adicionar gato\n" +
-                "2 - Listar gatos\n" +
-                "5 - Calcular duração da ração\n" +
-                "6 - Sair");
+                "4 - Listar gatos\n" +
+                "5 - Limpar lista gatos\n" +
+                "6 - Calcular duração da ração\n" +
+                "7 - Sair");
             string entrada = Console.ReadLine();
             int opcaoSelecionada = 0;
             int.TryParse(entrada, out opcaoSelecionada);
 
-            if (opcaoSelecionada == 6)
+            if (opcaoSelecionada == 7)
             {
                 Environment.Exit(0);
             } else if (opcaoSelecionada == 1)
@@ -40,14 +41,21 @@ namespace Desafio05
                 visualizarRacao();
             } else if (opcaoSelecionada == 3)
             {
-                adiconarGato();
+                adicionarGato();
             } else if (opcaoSelecionada == 4)
             {
                 listarGatos();
-            } else if (opcaoSelecionada == 5)
+            }
+            else if (opcaoSelecionada == 5)
+            {
+                gatos.Clear();
+                menu();
+            }
+            else if (opcaoSelecionada == 6)
             {
                 calcularDuracaoRacao();
-            } else
+            }
+            else
             {
                 Console.WriteLine("Opção invalida");
                 menu();
@@ -56,12 +64,14 @@ namespace Desafio05
         static void adicionarRacao()
         {
             Console.Clear();
+            racao.porcoes.Clear();
             Console.WriteLine("Incluindo ração: ");
             Console.WriteLine("Digite a marca da ração: ");
             racao.nome = Console.ReadLine();
-            Console.WriteLine("Digite a quantidade em quilos: ");
+            Console.WriteLine("Digite o peso do pacote em quilos: ");
             racao.peso = double.Parse(Console.ReadLine());
             adicionarPorcoes();
+            racao.porcoes.Sort((p1, p2) => p1.pesoGato.CompareTo(p2.pesoGato));//Ordenar lista comparando os pesos de gatos das porções
 
             menu();
         }
@@ -74,8 +84,8 @@ namespace Desafio05
             porcao.pesoGato = double.Parse(Console.ReadLine());
             Console.WriteLine("Porção ração: ");
             porcao.quantidadeRacao = Int32.Parse(Console.ReadLine());
-            Console.WriteLine("Incluir outra porção? (S/N) ");
             racao.porcoes.Add(porcao);
+            Console.WriteLine("Incluir outra porção? (S/N) ");
             if(Console.ReadLine().ToLower() == "s")
             {
                 adicionarPorcoes();
@@ -102,21 +112,59 @@ namespace Desafio05
             menu();
         }
 
-        static void adiconarGato()
+        static void adicionarGato()
         {
-
+            Gato gato = new Gato();
+            Console.Clear();
+            Console.WriteLine("Incluindo gato: ");
+            gato.nome = Console.ReadLine();
+            Console.WriteLine("Incluindo peso gato: ");
+            gato.peso = double.Parse(Console.ReadLine());
+            gatos.Add(gato);
+            Console.WriteLine("Incluir outro gato? (S/N) ");
+            if(Console.ReadLine().ToLower() == "s")
+            {
+                adicionarGato();
+            }
             menu();
         }
 
         static void listarGatos()
         {
-
+            Console.Clear();
+            Console.WriteLine("Gatos: \n" +
+                "-------------------------------------");
+            foreach (var gato in gatos)
+            {
+                Console.WriteLine("Nome do gato: " + gato.nome + "\n" +
+                    "Peso do gato: " + gato.peso + "\n" +
+                    "-------------------------------------");
+            }
+            Console.WriteLine("\n\nPressione qualquer tecla para continuar");
+            Console.ReadLine();
             menu();
         }
 
         static void calcularDuracaoRacao()
         {
-
+            Console.Clear();
+            double racaoDiaria = 0;
+            double pesoRacaoGramas = racao.peso * 1000; //transformando o peso da ração de kg para gramas
+            foreach (var gato in gatos)
+            {
+                var porcaoEncontrada = 0.0;
+                foreach (var porcao in racao.porcoes)
+                {
+                    if(gato.peso <= porcao.pesoGato)
+                    {
+                        porcaoEncontrada = porcao.quantidadeRacao;
+                            break;
+                    }
+                } racaoDiaria += porcaoEncontrada;
+            }
+            var mediaRacao = pesoRacaoGramas / racaoDiaria;
+            Console.WriteLine("A media da ração é: " + mediaRacao);
+            Console.ReadLine();
             menu();
         }
 

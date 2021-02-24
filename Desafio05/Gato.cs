@@ -6,7 +6,7 @@ namespace Desafio05
 {
     class Gato
     {
-        string nome { get; set; }
-        double peso { get; set; }
+        public string nome { get; set; }
+        public double peso { get; set; }
     }
 }

@@ -71,7 +71,7 @@ namespace Desafio05
             Console.WriteLine("Digite o peso do pacote em quilos: ");
             racao.peso = double.Parse(Console.ReadLine());
             adicionarPorcoes();
-            racao.porcoes.Sort((p1, p2) => p1.pesoGato.CompareTo(p2.pesoGato));//Ordenar lista comparando os pesos de gatos das porções
+            racao.porcoes.Sort((p1, p2) => p1.pesoGato.CompareTo(p2.pesoGato)); //Ordenar lista comparando os pesos de gatos das porções
 
             menu();
         }
@@ -91,7 +91,6 @@ namespace Desafio05
                 adicionarPorcoes();
             }
         }
-
 
         static void visualizarRacao()
         {
@@ -167,6 +166,5 @@ namespace Desafio05
             Console.ReadLine();
             menu();
         }
-
     }
 }
